@@ -26,26 +26,26 @@ export default function Home() {
     });
   }, []);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetValue = e.target.value;
-    setSearchTerm(targetValue);
-
+  useEffect(() => {
     const filteredAdvocates = advocates.filter((advocate) => {
       return (
-        advocate.firstName.includes(targetValue) ||
-        advocate.lastName.includes(targetValue) ||
-        advocate.city.includes(targetValue) ||
-        advocate.degree.includes(targetValue) ||
-        advocate.specialties.includes(targetValue) ||
-        advocate.yearsOfExperience.toString().includes(targetValue)
+        advocate.firstName.includes(searchTerm) ||
+        advocate.lastName.includes(searchTerm) ||
+        advocate.city.includes(searchTerm) ||
+        advocate.degree.includes(searchTerm) ||
+        advocate.specialties.includes(searchTerm) ||
+        advocate.yearsOfExperience.toString().includes(searchTerm)
       );
     });
 
     setFilteredAdvocates(filteredAdvocates);
+  }, [searchTerm, advocates]);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
   const onClick = () => {
-    setFilteredAdvocates(advocates);
     setSearchTerm("");
   };
 
