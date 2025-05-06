@@ -13,9 +13,28 @@ type Advocate = {
 };
 
 export default function Home() {
+  const ROWS_PER_PAGE = 10;
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const indexOfLastRow = currentPage * ROWS_PER_PAGE;
+  const indexOfFirstRow = indexOfLastRow - ROWS_PER_PAGE;
+  const currentRows = filteredAdvocates.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(filteredAdvocates.length / ROWS_PER_PAGE);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/advocates").then((response) => {
@@ -43,6 +62,7 @@ export default function Home() {
     });
 
     setFilteredAdvocates(filteredAdvocates);
+    setCurrentPage(1);
   }, [searchTerm, advocates]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,14 +109,14 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {filteredAdvocates.length === 0 ? (
+            {currentRows.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center text-gray-500 py-4">
                   No advocates found.
                 </td>
               </tr>
             ) : (
-              filteredAdvocates.map((advocate) => (
+              currentRows.map((advocate) => (
                 <tr key={`${advocate.firstName}-${advocate.lastName}`} className="hover:bg-gray-100">
                   <td className="table-cell">{advocate.firstName}</td>
                   <td className="table-cell">{advocate.lastName}</td>
@@ -114,6 +134,25 @@ export default function Home() {
             )}
           </tbody>
         </table>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+          <button
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </main>
   );
