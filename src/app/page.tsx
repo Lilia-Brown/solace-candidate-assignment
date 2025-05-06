@@ -74,74 +74,85 @@ export default function Home() {
   };
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
+    <main className="main">
+      <h1 className="page-header">Solace Advocates</h1>
+      <div className="search-box">
+        <p className="search-header">Search</p>
+        <p className="search-subheader">
           Searching for: <span>{searchTerm}</span>
         </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} value={searchTerm} />
-        <button onClick={onClick}>Reset</button>
+        <div className="search-box-controls">
+          <input
+            className="search-input"
+            onChange={onChange}
+            placeholder="Search advocates..."
+            value={searchTerm} />
+          <button
+            className="search-reset-button"
+            onClick={onClick}
+          >
+            Reset
+          </button>
+        </div>
       </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Degree</th>
-            <th>Specialties</th>
-            <th>Years of Experience</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentRows.length === 0 && searchTerm ? (
+      <div className="table-wrapper">
+        <table className="advocates-table">
+          <thead className="bg-primary text-white">
             <tr>
-              <td colSpan={7} style={{ textAlign: "center" }}>
-                No advocates found for "{searchTerm}"
-              </td>
+              <th className="table-header">First Name</th>
+              <th className="table-header">Last Name</th>
+              <th className="table-header">City</th>
+              <th className="table-header">Degree</th>
+              <th className="table-header">Specialties</th>
+              <th className="table-header">Years of Experience</th>
+              <th className="table-header">Phone Number</th>
             </tr>
-          ) : (
-            currentRows.map((advocate) => (
-              <tr key={`${advocate.firstName}-${advocate.lastName}`}>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div key={s}>{s}</div>
-                  ))}
+          </thead>
+          <tbody>
+            {currentRows.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="text-center text-gray-500 py-4">
+                  No advocates found.
                 </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+            ) : (
+              currentRows.map((advocate) => (
+                <tr key={`${advocate.firstName}-${advocate.lastName}`} className="hover:bg-gray-100">
+                  <td className="table-cell">{advocate.firstName}</td>
+                  <td className="table-cell">{advocate.lastName}</td>
+                  <td className="table-cell">{advocate.city}</td>
+                  <td className="table-cell">{advocate.degree}</td>
+                  <td className="table-cell">
+                    {advocate.specialties.map((s) => (
+                      <div key={s}>{s}</div>
+                    ))}
+                  </td>
+                  <td className="table-cell">{advocate.yearsOfExperience}</td>
+                  <td className="table-cell">{advocate.phoneNumber}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+          <button
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </main>
   );
