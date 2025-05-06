@@ -81,8 +81,14 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
+          {filteredAdvocates.length === 0 && searchTerm ? (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "center" }}>
+                No advocates found for "{searchTerm}"
+              </td>
+            </tr>
+          ) : (
+            filteredAdvocates.map((advocate) => (
               <tr key={`${advocate.firstName}-${advocate.lastName}`}>
                 <td>{advocate.firstName}</td>
                 <td>{advocate.lastName}</td>
@@ -96,8 +102,8 @@ export default function Home() {
                 <td>{advocate.yearsOfExperience}</td>
                 <td>{advocate.phoneNumber}</td>
               </tr>
-            );
-          })}
+            ))
+          )}
         </tbody>
       </table>
     </main>
