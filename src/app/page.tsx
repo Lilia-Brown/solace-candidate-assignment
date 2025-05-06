@@ -28,13 +28,17 @@ export default function Home() {
 
   useEffect(() => {
     const filteredAdvocates = advocates.filter((advocate) => {
+      const withoutCaseIncludes = (source: string, search: string): boolean => {
+        return source.toLowerCase().includes(search.toLowerCase());
+      };
+
       return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.toString().includes(searchTerm)
+        withoutCaseIncludes(advocate.firstName, searchTerm) ||
+        withoutCaseIncludes(advocate.lastName, searchTerm) ||
+        withoutCaseIncludes(advocate.city, searchTerm) ||
+        withoutCaseIncludes(advocate.degree, searchTerm) ||
+        advocate.specialties.some((s) => withoutCaseIncludes(s, searchTerm)) ||
+        withoutCaseIncludes(advocate.yearsOfExperience.toString(), searchTerm)
       );
     });
 
