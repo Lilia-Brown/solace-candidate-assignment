@@ -16,3 +16,7 @@ This take-home project demonstrates my approach to working within an existing co
 - For a large database, update the pagination to be on the back end, only requesting a certain amount of records to decrease the load time of the page
   - Update this page to have a "Loading" state on initial load
 - Add filters to allow the user to show results based on desired values for certain columns
+
+## Notes
+The Pull Requests included are all built off each others' branches to make sure they would all work if merged into the project seamlessly.
+Ideally, we won't be branching so far, but I didn't want there to be merge conflicts if pulling them in separately
